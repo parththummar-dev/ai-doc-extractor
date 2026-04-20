@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'mg'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	google()
+}
+
+ext {
+	djlVersion = "0.26.0"
+}
+
+dependencies {
+	implementation("ai.djl:api:$djlVersion")
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// Source: https://mvnrepository.com/artifact/dev.langchain4j/langchain4j
+	implementation("dev.langchain4j:langchain4j:0.30.0")
+	// Source: https://mvnrepository.com/artifact/com.google.genai/google-genai
+	implementation("com.google.genai:google-genai:1.44.0")
+	implementation 'org.apache.pdfbox:pdfbox:2.0.30'
+
+//	// ONLY this is needed for HuggingFace
+//	implementation "ai.djl.huggingface:tokenizers:$djlVersion"
+//
+//	implementation "ai.djl.pytorch:pytorch-engine:$djlVersion"
+//	runtimeOnly "ai.djl.pytorch:pytorch-native-auto:$djlVersion"
+//	// Native runtime
+//	runtimeOnly "ai.djl.pytorch:pytorch-native-auto:$djlVersion"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
